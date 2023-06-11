@@ -3,24 +3,6 @@ import { defineStore, type _GettersTree } from 'pinia'
 import { DateTime } from 'luxon'
 import { Period } from '@/consts/consts'
 
-// TODO: Delete
-const dummyData = [
-  {
-    id: '1',
-    title: 'Test Post01',
-    createdAt: DateTime.now().toISO(),
-  },
-  {
-    id: '2',
-    title: 'Test Post02',
-    createdAt: DateTime.now().minus({ days: 5 }).toISO(),
-  },
-  {
-    id: '3',
-    title: 'Test Post03',
-    createdAt: DateTime.now().minus({ weeks: 3 }).toISO(),
-  },
-]
 interface StateTypes {
   ids: string[]
   allPosts: Map<String, Post>
@@ -33,6 +15,7 @@ interface GettersType extends _GettersTree<StateTypes> {
 
 interface ActionsType {
   setSelectedPeriod: (period: Period) => void
+  fetchPosts: () => void
 }
 
 export const usePosts = defineStore<
@@ -43,12 +26,8 @@ export const usePosts = defineStore<
 >({
   id: 'posts',
   state: () => ({
-    ids: ['1', '2', '3'],
-    allPosts: new Map([
-      ['1', dummyData[0]],
-      ['2', dummyData[1]],
-      ['3', dummyData[2]],
-    ]),
+    ids: [],
+    allPosts: new Map(),
     selectedPeriod: 'Today',
   }),
   getters: {
@@ -82,6 +61,21 @@ export const usePosts = defineStore<
   actions: {
     setSelectedPeriod(period) {
       this.selectedPeriod = period
+    },
+    async fetchPosts() {
+      console.log('Posts Fetching....')
+      const res = await window.fetch('http://localhost:8000/posts')
+      const data = (await res.json()) as Post[]
+      let ids: string[] = []
+      let allPosts = new Map<string, Post>()
+      for (const post of data) {
+        ids = [...ids, post.id]
+        allPosts.set(post.id, post)
+      }
+      setTimeout(() => {
+        this.ids = ids
+        this.allPosts = allPosts
+      }, 2000)
     },
   },
 })

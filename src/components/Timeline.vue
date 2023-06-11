@@ -4,6 +4,7 @@ import TimelinePost from '@/components/TimelinePost.vue'
 import { periods } from '@/consts/consts'
 
 const usePostsStore = usePosts()
+await usePostsStore.fetchPosts()
 </script>
 
 <template>
@@ -18,7 +19,6 @@ const usePostsStore = usePosts()
         {{ period }}
       </a>
     </div>
-    <p>{{ usePostsStore.selectedPeriod }}</p>
     <div v-if="usePostsStore.filteredPosts.length">
       <TimelinePost
         v-for="post of usePostsStore.filteredPosts"
@@ -26,6 +26,6 @@ const usePostsStore = usePosts()
         :post="post"
       />
     </div>
-    <div v-else>No posts...</div>
+    <div v-else>No posts yet...</div>
   </nav>
 </template>

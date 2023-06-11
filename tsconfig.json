@@ -12,9 +12,11 @@
     /* Bundler mode */
     "moduleResolution": "Node",
     // "allowImportingTsExtensions": true,
+    "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
+    "sourceMap": true,
     "jsx": "preserve",
     /* Linting */
     "strict": true,
@@ -27,6 +29,7 @@
         "./*"
       ]
     },
+    "esModuleInterop": true,
   },
   "include": [
     "src/**/*.ts",
@@ -38,5 +41,8 @@
     {
       "path": "./tsconfig.node.json"
     }
-  ]
+  ],
+  "ts-node": {
+    "esm": true,
+  }
 }
