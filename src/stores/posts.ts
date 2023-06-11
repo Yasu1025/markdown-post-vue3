@@ -72,10 +72,9 @@ export const usePosts = defineStore<
         ids = [...ids, post.id]
         allPosts.set(post.id, post)
       }
-      setTimeout(() => {
-        this.ids = ids
-        this.allPosts = allPosts
-      }, 2000)
+
+      this.ids = ids
+      this.allPosts = allPosts
     },
   },
 })
