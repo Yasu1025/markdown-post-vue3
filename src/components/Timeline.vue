@@ -1,37 +1,31 @@
 <script setup lang="ts">
-import { DateTime } from 'luxon'
-import { Post } from '@/types/posts'
+import { usePosts } from '@/stores/posts'
 import TimelinePost from '@/components/TimelinePost.vue'
+import { periods } from '@/consts/consts'
 
-// dummy data
-const posts: Post[] = [
-  {
-    id: '1',
-    title: 'Test Post01',
-    createdAt: DateTime.now().toISO(),
-  },
-  {
-    id: '2',
-    title: 'Test Post02',
-    createdAt: DateTime.now().minus({ days: 5 }).toISO(),
-  },
-  {
-    id: '3',
-    title: 'Test Post03',
-    createdAt: DateTime.now().minus({ weeks: 3 }).toISO(),
-  },
-]
+const usePostsStore = usePosts()
 </script>
 
 <template>
   <nav class="is-primary panel">
     <div class="panel-tabs">
-      <a>Today</a>
-      <a>This Week</a>
-      <a>This Month</a>
+      <a
+        v-for="period of periods"
+        :key="period"
+        :class="{ 'is-active': period === usePostsStore.selectedPeriod }"
+        @click="usePostsStore.setSelectedPeriod(period)"
+      >
+        {{ period }}
+      </a>
     </div>
-    <div>
-      <TimelinePost v-for="post in posts" :key="post.id" :post="post" />
+    <p>{{ usePostsStore.selectedPeriod }}</p>
+    <div v-if="usePostsStore.filteredPosts.length">
+      <TimelinePost
+        v-for="post of usePostsStore.filteredPosts"
+        :key="post.id"
+        :post="post"
+      />
     </div>
+    <div v-else>No posts...</div>
   </nav>
 </template>

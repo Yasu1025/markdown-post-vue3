@@ -3,3 +3,7 @@ export interface Post {
   title: string
   createdAt: string
 }
+
+export interface TimelinePost extends Omit<Post, 'created'> {
+  createdAt: DateTime
+}
