@@ -16,6 +16,7 @@ interface GettersType extends _GettersTree<StateTypes> {
 interface ActionsType {
   setSelectedPeriod: (period: Period) => void
   fetchPosts: () => void
+  createPost: (post: TimelinePost) => void
 }
 
 export const usePosts = defineStore<
@@ -75,6 +76,21 @@ export const usePosts = defineStore<
 
       this.ids = ids
       this.allPosts = allPosts
+    },
+    async createPost(newPost: TimelinePost) {
+      const body = JSON.stringify({
+        ...newPost,
+        createdAt: newPost.createdAt.toISO(),
+      })
+      const res = await window.fetch('http://localhost:8000/posts', {
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/json',
+        },
+        body,
+      })
+
+      console.log('Posted new note!!', res)
     },
   },
 })
