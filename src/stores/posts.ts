@@ -65,7 +65,7 @@ export const usePosts = defineStore<
     },
     async fetchPosts() {
       console.log('Posts Fetching....')
-      const res = await window.fetch('http://localhost:8000/posts')
+      const res = await window.fetch('/api/posts')
       const data = (await res.json()) as Post[]
       let ids: string[] = []
       let allPosts = new Map<string, Post>()
@@ -82,7 +82,7 @@ export const usePosts = defineStore<
         ...newPost,
         createdAt: newPost.createdAt.toISO(),
       })
-      const res = await window.fetch('http://localhost:8000/posts', {
+      const res = await window.fetch('/api/posts', {
         method: 'POST',
         headers: {
           'Content-type': 'application/json',

@@ -21,7 +21,7 @@ export const useUsers = defineStore<
   actions: {
     async createUser(newUser) {
       const body = JSON.stringify(newUser)
-      const res = await window.fetch('http://localhost:8000/users', {
+      const res = await window.fetch('/api/users', {
         method: 'POST',
         headers: {
           'Content-type': 'application/json',
