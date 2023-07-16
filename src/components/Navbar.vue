@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useModal } from '@/composables/modal'
+import SignupForm from './SignupForm.vue'
 
 const modal = useModal()
 </script>
@@ -9,9 +10,8 @@ const modal = useModal()
     <div class="navbar-end">
       <div class="buttons">
         <RouterLink to="/posts/new" class="button">New Post</RouterLink>
-        <button class="button">Log Out</button>
+        <button class="button" @click="modal.showModal">Sign Up</button>
       </div>
-      <button class="button" @click="modal.showModal">Sign Up</button>
 
       <!-- <div v-else class="buttons">
         <button class="button" @click="modal.showModal('signUp')">Sign Up</button>
@@ -21,7 +21,6 @@ const modal = useModal()
   </div>
 
   <Teleport to="#modal">
-    <!-- <component :is="modal.component.value" /> -->
-    Hi Hi
+    <SignupForm />
   </Teleport>
 </template>

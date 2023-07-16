@@ -2,6 +2,8 @@ import express from 'express'
 import cors from 'cors'
 import { DateTime } from 'luxon'
 import bodyParser from 'body-parser'
+import { Post } from '@/types/posts'
+import { User } from '@/types/user'
 
 const app = express()
 app.use(cors())
@@ -31,14 +33,23 @@ const allPosts = [
   },
 ]
 
+const allUsers: User[] = []
+
 app.get('/posts', (_, res) => {
   res.json(allPosts)
 })
 
-app.post('/posts', (req, res) => {
+app.post<{}, {}, Post>('/posts', (req, res) => {
   const newPost = { ...req.body, id: (Math.random() * 100000).toFixed() }
   allPosts.push(newPost)
   res.json()
+})
+
+app.post<{}, {}, User>('/users', (req, res) => {
+  const user: User = { ...req.body, id: (Math.random() * 100000).toFixed() }
+  allUsers.push(user)
+  const { password, ...rest } = user
+  res.json(rest)
 })
 
 app.listen(8000, () => {
