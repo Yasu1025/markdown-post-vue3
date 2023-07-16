@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import Navbar from '@/components/Navbar.vue'
 import { useModal } from '@/composables/modal'
+import { useUsers } from '@/stores/users'
 
 const modal = useModal()
 const modalStyles = computed(() => {
@@ -9,6 +10,9 @@ const modalStyles = computed(() => {
     display: modal.show.value ? 'block' : 'none',
   }
 })
+
+const usersStore = useUsers()
+usersStore.authenticate()
 </script>
 
 <template>
