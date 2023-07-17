@@ -11,6 +11,7 @@ interface GettersType extends _GettersTree<StateTypes> {
 
 interface ActionsType {
   authenticate: () => void
+  login: (newUser: NewUser) => any
   logout: () => void
   createUser: (newUser: NewUser) => void
 }
@@ -46,6 +47,21 @@ export const useUsers = defineStore<
         this.currentUserId = null
       }
     },
+    async login(newUser) {
+      const body = JSON.stringify(newUser)
+      const res = await window.fetch('/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/json',
+        },
+        body,
+      })
+
+      console.log('Logged in', res)
+
+      // this.authenticate()
+      return res
+    },
     async logout() {
       const res = await window.fetch('/api/logout', {
         method: 'POST',
@@ -54,7 +70,7 @@ export const useUsers = defineStore<
         },
       })
 
-      console.log('Created new user!!', res)
+      console.log('Logged out!!', res)
       this.authenticate()
     },
     async createUser(newUser) {

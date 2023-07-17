@@ -5,7 +5,7 @@ import bodyParser from 'body-parser'
 import cookieParser from 'cookie-parser'
 import jsonwebtoken from 'jsonwebtoken'
 import { Post } from '@/types/posts'
-import { User } from '@/types/user'
+import { NewUser, User } from '@/types/user'
 
 const app = express()
 app.use(cors())
@@ -79,6 +79,17 @@ app.get('/current-user', (req, res) => {
     res.json(result)
   } catch (error) {
     res.status(404).end()
+  }
+})
+
+app.post<{}, {}, NewUser>('/login', (req, res) => {
+  const targetUser = allUsers.find(x => x.username === req.body.username)
+
+  if (!targetUser || targetUser.password !== req.body.password) {
+    res.status(401).end()
+  } else {
+    authenticate(targetUser.id, req, res)
+    res.status(200).end()
   }
 })
 
